@@ -21,7 +21,7 @@
                 console.error('Error accessing camera:', error);
             });
 
-        captureButton.addEventListener('click', () => {
+        captureButton.addEventListener('click', async () => {
             const canvas = document.createElement('canvas');
             const context = canvas.getContext('2d');
             canvas.width = video.videoWidth;
@@ -29,20 +29,9 @@
             context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
             const imageDataUrl = canvas.toDataURL('image/jpeg');
-            
+
             // Convert the Data URL to a Blob
-            const byteCharacters = atob(imageDataUrl.split(',')[1]);
-            const byteArrays = [];
-            for (let offset = 0; offset < byteCharacters.length; offset += 512) {
-                const slice = byteCharacters.slice(offset, offset + 512);
-                const byteNumbers = new Array(slice.length);
-                for (let i = 0; i < slice.length; i++) {
-                    byteNumbers[i] = slice.charCodeAt(i);
-                }
-                const byteArray = new Uint8Array(byteNumbers);
-                byteArrays.push(byteArray);
-            }
-            const blob = new Blob(byteArrays, { type: 'image/jpeg' });
+            const blob = await (await fetch(imageDataUrl)).blob();
 
             // Create a FormData object and append the Blob
             const formData = new FormData();
@@ -53,25 +42,26 @@
             const repoOwner = 'Ahmed-Sharaf-Mohammed';
             const repoName = 'test';
 
-            // Use the GitHub API to create a new file
-            fetch(`https://api.github.com/repos/${repoOwner}/${repoName}/contents/captured_photo.jpg`, {
-                method: 'PUT',
-                headers: {
-                    Authorization: `token ${accessToken}`,
-                },
-                body: JSON.stringify({
-                    message: 'Add captured photo',
-                    content: formData.get('file'),
-                    branch: 'main', // Replace with your branch name
-                }),
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Photo uploaded successfully:', data);
-            })
-            .catch(error => {
+            try {
+                const response = await fetch(`https://api.github.com/repos/${repoOwner}/${repoName}/contents/captured_photo.jpg`, {
+                    method: 'PUT',
+                    headers: {
+                        Authorization: `token ${accessToken}`,
+                    },
+                    body: JSON.stringify({
+                        message: 'Add captured photo',
+                        content: formData.get('file'),
+                        branch: 'main', // Replace with your branch name
+                    }),
+                });
+
+                const data = await response.json();
+                const imageUrl = data.content.download_url;
+
+                console.log('Photo uploaded successfully. URL:', imageUrl);
+            } catch (error) {
                 console.error('Error uploading photo:', error);
-            });
+            }
         });
     </script>
 </body>
