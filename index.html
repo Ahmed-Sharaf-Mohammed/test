@@ -3,65 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Take Photo from Camera and Save to GitHub Repository</title>
+    <title>Camera Capture</title>
 </head>
 <body>
-    <video id="cameraFeed" width="100%" height="auto" autoplay></video>
-    <button id="captureButton">Capture Photo</button>
-
+    <h1>Camera Capture</h1>
+    <video id="video" width="640" height="480" autoplay></video>
+    <button id="captureBtn">Capture Photo</button>
+    <canvas id="canvas" width="640" height="480"></canvas>
+    
     <script>
-        const video = document.getElementById('cameraFeed');
-        const captureButton = document.getElementById('captureButton');
+        document.addEventListener('DOMContentLoaded', () => {
+            const video = document.getElementById('video');
+            const canvas = document.getElementById('canvas');
+            const captureBtn = document.getElementById('captureBtn');
 
-        navigator.mediaDevices.getUserMedia({ video: true })
-            .then(stream => {
-                video.srcObject = stream;
-            })
-            .catch(error => {
-                console.error('Error accessing camera:', error);
-            });
-
-        captureButton.addEventListener('click', async () => {
-            const canvas = document.createElement('canvas');
-            const context = canvas.getContext('2d');
-            canvas.width = video.videoWidth;
-            canvas.height = video.videoHeight;
-            context.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-            const imageDataUrl = canvas.toDataURL('image/jpeg');
-
-            // Convert the Data URL to a Blob
-            const blob = await (await fetch(imageDataUrl)).blob();
-
-            // Create a FormData object and append the Blob
-            const formData = new FormData();
-            formData.append('file', blob, 'captured_photo.jpg');
-
-            // Get your GitHub personal access token and replace 'YOUR_TOKEN' and 'YOUR_USERNAME/REPO' accordingly
-            const accessToken = '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';
-            const repoOwner = 'Ahmed-Sharaf-Mohammed';
-            const repoName = 'test';
-
-            try {
-                const response = await fetch(`https://api.github.com/repos/${repoOwner}/${repoName}/contents/captured_photo.jpg`, {
-                    method: 'PUT',
-                    headers: {
-                        Authorization: `token ${accessToken}`,
-                    },
-                    body: JSON.stringify({
-                        message: 'Add captured photo',
-                        content: formData.get('file'),
-                        branch: 'main', // Replace with your branch name
-                    }),
+            navigator.mediaDevices.getUserMedia({ video: true })
+                .then(stream => {
+                    video.srcObject = stream;
+                })
+                .catch(error => {
+                    console.error('Error accessing camera:', error);
                 });
 
-                const data = await response.json();
-                const imageUrl = data.content.download_url;
+            captureBtn.addEventListener('click', () => {
+                const context = canvas.getContext('2d');
+                context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-                console.log('Photo uploaded successfully. URL:', imageUrl);
-            } catch (error) {
-                console.error('Error uploading photo:', error);
-            }
+                // You can convert the canvas content to a data URL or use it as needed
+                const photoDataURL = canvas.toDataURL('image/png');
+                console.log('Captured Photo:', photoDataURL);
+            });
         });
     </script>
 </body>
