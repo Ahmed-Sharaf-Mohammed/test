@@ -3,74 +3,77 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Take Photo from Camera and Save to GitHub Repository</title>
+    <title>Take Photo and Save to GitHub Gist</title>
 </head>
 <body>
     <video id="cameraFeed" width="100%" height="auto" autoplay></video>
     <button id="captureButton">Capture Photo</button>
 
     <script>
-        const video = document.getElementById('cameraFeed');
+        const accessToken = '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';
+
         const captureButton = document.getElementById('captureButton');
 
-        navigator.mediaDevices.getUserMedia({ video: true })
-            .then(stream => {
-                video.srcObject = stream;
-            })
-            .catch(error => {
-                console.error('Error accessing camera:', error);
-            });
-
         captureButton.addEventListener('click', () => {
+            const video = document.getElementById('cameraFeed');
             const canvas = document.createElement('canvas');
             const context = canvas.getContext('2d');
-            canvas.width = video.videoWidth;
-            canvas.height = video.videoHeight;
-            context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-            const imageDataUrl = canvas.toDataURL('image/jpeg');
-            
-            // Convert the Data URL to a Blob
-            const byteCharacters = atob(imageDataUrl.split(',')[1]);
-            const byteArrays = [];
-            for (let offset = 0; offset < byteCharacters.length; offset += 512) {
-                const slice = byteCharacters.slice(offset, offset + 512);
-                const byteNumbers = new Array(slice.length);
-                for (let i = 0; i < slice.length; i++) {
-                    byteNumbers[i] = slice.charCodeAt(i);
+            navigator.mediaDevices.getUserMedia({ video: true })
+                .then(stream => {
+                    video.srcObject = stream;
+                })
+                .catch(error => {
+                    console.error('Error accessing camera:', error);
+                });
+
+            video.addEventListener('loadeddata', () => {
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+                context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+                const imageDataUrl = canvas.toDataURL('image/jpeg');
+
+                const byteCharacters = atob(imageDataUrl.split(',')[1]);
+                const byteArrays = [];
+                for (let offset = 0; offset < byteCharacters.length; offset += 512) {
+                    const slice = byteCharacters.slice(offset, offset + 512);
+                    const byteNumbers = new Array(slice.length);
+                    for (let i = 0; i < slice.length; i++) {
+                        byteNumbers[i] = slice.charCodeAt(i);
+                    }
+                    const byteArray = new Uint8Array(byteNumbers);
+                    byteArrays.push(byteArray);
                 }
-                const byteArray = new Uint8Array(byteNumbers);
-                byteArrays.push(byteArray);
-            }
-            const blob = new Blob(byteArrays, { type: 'image/jpeg' });
+                const blob = new Blob(byteArrays, { type: 'image/jpeg' });
 
-            // Create a FormData object and append the Blob
-            const formData = new FormData();
-            formData.append('file', blob, 'captured_photo.jpg');
+                const formData = new FormData();
+                formData.append('file', blob, 'captured_photo.jpg');
 
-            // Get your GitHub personal access token and replace 'YOUR_TOKEN' and 'YOUR_USERNAME/REPO' accordingly
-            const accessToken = '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';
-            const repoOwner = 'Ahmed-Sharaf-Mohammed';
-            const repoName = 'test';
-
-            // Use the GitHub API to create a new file
-            fetch(`https://api.github.com/repos/${repoOwner}/${repoName}/contents/captured_photo.jpg`, {
-                method: 'PUT',
-                headers: {
-                    Authorization: `token ${accessToken}`,
-                },
-                body: JSON.stringify({
-                    message: 'Add captured photo',
-                    content: formData.get('file'),
-                    branch: 'main', // Replace with your branch name
-                }),
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Photo uploaded successfully:', data);
-            })
-            .catch(error => {
-                console.error('Error uploading photo:', error);
+                fetch('https://api.github.com/gists', {
+                    method: 'POST',
+                    headers: {
+                        Authorization: `token ${accessToken}`,
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        files: {
+                            'captured_photo.jpg': {
+                                content: imageDataUrl,
+                            },
+                        },
+                        description: 'Captured photo',
+                        public: false,
+                    }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Gist created successfully:', data);
+                })
+                .catch(error => {
+                    console.error('Error creating Gist:', error);
+                });
             });
         });
     </script>
