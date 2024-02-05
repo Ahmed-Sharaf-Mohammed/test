@@ -10,12 +10,14 @@
     <video id="video" width="640" height="480" autoplay></video>
     <button id="captureBtn">Capture Photo</button>
     <canvas id="canvas" width="640" height="480"></canvas>
+    <a id="downloadLink" style="display: none;">Download Photo</a>
     
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const video = document.getElementById('video');
             const canvas = document.getElementById('canvas');
             const captureBtn = document.getElementById('captureBtn');
+            const downloadLink = document.getElementById('downloadLink');
 
             navigator.mediaDevices.getUserMedia({ video: true })
                 .then(stream => {
@@ -29,9 +31,13 @@
                 const context = canvas.getContext('2d');
                 context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-                // You can convert the canvas content to a data URL or use it as needed
+                // Convert the canvas content to a data URL
                 const photoDataURL = canvas.toDataURL('image/png');
-                console.log('Captured Photo:', photoDataURL);
+
+                // Set the download link href and display it
+                downloadLink.href = photoDataURL;
+                downloadLink.download = 'captured_photo.png';
+                downloadLink.style.display = 'block';
             });
         });
     </script>
