@@ -3,50 +3,74 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Gist with test.txt and Get Gist URL</title>
+    <title>Take Photo from Camera and Save to GitHub Repository</title>
 </head>
 <body>
-    <button id="createGistButton">Create Gist with test.txt</button>
+    <video id="cameraFeed" width="100%" height="auto" autoplay></video>
+    <button id="captureButton">Capture Photo</button>
 
     <script>
-        const accessToken = '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';
-        const createGistButton = document.getElementById('createGistButton');
+        const video = document.getElementById('cameraFeed');
+        const captureButton = document.getElementById('captureButton');
 
-        createGistButton.addEventListener('click', () => {
-            const content = 'Hello, this is a test file!';
-            const fileName = 'test.txt';
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(stream => {
+                video.srcObject = stream;
+            })
+            .catch(error => {
+                console.error('Error accessing camera:', error);
+            });
 
-            fetch('https://api.github.com/gists', {
-                method: 'POST',
+        captureButton.addEventListener('click', () => {
+            const canvas = document.createElement('canvas');
+            const context = canvas.getContext('2d');
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+            const imageDataUrl = canvas.toDataURL('image/jpeg');
+            
+            // Convert the Data URL to a Blob
+            const byteCharacters = atob(imageDataUrl.split(',')[1]);
+            const byteArrays = [];
+            for (let offset = 0; offset < byteCharacters.length; offset += 512) {
+                const slice = byteCharacters.slice(offset, offset + 512);
+                const byteNumbers = new Array(slice.length);
+                for (let i = 0; i < slice.length; i++) {
+                    byteNumbers[i] = slice.charCodeAt(i);
+                }
+                const byteArray = new Uint8Array(byteNumbers);
+                byteArrays.push(byteArray);
+            }
+            const blob = new Blob(byteArrays, { type: 'image/jpeg' });
+
+            // Create a FormData object and append the Blob
+            const formData = new FormData();
+            formData.append('file', blob, 'captured_photo.jpg');
+
+            // Get your GitHub personal access token and replace 'YOUR_TOKEN' and 'YOUR_USERNAME/REPO' accordingly
+            const accessToken = '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';
+            const repoOwner = 'Ahmed-Sharaf-Mohammed';
+            const repoName = 'test';
+
+            // Use the GitHub API to create a new file
+            fetch(`https://api.github.com/repos/${repoOwner}/${repoName}/contents/captured_photo.jpg`, {
+                method: 'PUT',
                 headers: {
                     Authorization: `token ${accessToken}`,
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
                 },
                 body: JSON.stringify({
-                    files: {
-                        [fileName]: {
-                            content: content,
-                        },
-                    },
-                    description: 'Test Gist with test.txt',
-                    public: false,
+                    message: 'Add captured photo',
+                    content: formData.get('file'),
+                    branch: 'main', // Replace with your branch name
                 }),
             })
             .then(response => response.json())
             .then(data => {
-                console.log('Gist created successfully:', data);
-
-                // Get the Gist URL
-                const gistUrl = data.html_url;
-                console.log('Gist URL:', gistUrl);
-
-                // Now you can use the Gist URL as needed
-                // For example, you might want to display it on the webpage
-                // or use it for further actions.
+                console.log('Photo uploaded successfully:', data);
             })
             .catch(error => {
-                console.error('Error creating Gist:', error);
+                console.error('Error uploading photo:', error);
             });
         });
     </script>
