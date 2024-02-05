@@ -1,1 +1,41 @@
-<iframe src="https://docs.google.com/forms/d/e/1FAIpQLSchnWVZXRc4614b156CuJbdA8yN69QeFLNXrteK8_QSJGJXTA/viewform?embedded=true" width="640" height="720" frameborder="0" marginheight="0" marginwidth="0">جارٍ التحميل…</iframe>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Take Photo from Camera</title>
+</head>
+<body>
+    <video id="cameraFeed" width="100%" height="auto" autoplay></video>
+    <button id="captureButton">Capture Photo</button>
+
+    <script>
+        const video = document.getElementById('cameraFeed');
+        const captureButton = document.getElementById('captureButton');
+
+        // Access the device camera
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(stream => {
+                video.srcObject = stream;
+            })
+            .catch(error => {
+                console.error('Error accessing camera:', error);
+            });
+
+        // Capture a photo from the video feed
+        captureButton.addEventListener('click', () => {
+            const canvas = document.createElement('canvas');
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            const context = canvas.getContext('2d');
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+            // You can now use the canvas image data or convert it to a data URL
+            const imageDataUrl = canvas.toDataURL('image/jpeg');
+            console.log('Captured photo:', imageDataUrl);
+
+            // Optionally, you can send the imageDataUrl to your server for further processing or storage.
+        });
+    </script>
+</body>
+</html>
