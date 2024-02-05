@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Take Photo from Camera</title>
+    <title>Take Photo from Camera and Save to GitHub Repository</title>
 </head>
 <body>
     <video id="cameraFeed" width="100%" height="auto" autoplay></video>
@@ -13,7 +13,6 @@
         const video = document.getElementById('cameraFeed');
         const captureButton = document.getElementById('captureButton');
 
-        // Access the device camera
         navigator.mediaDevices.getUserMedia({ video: true })
             .then(stream => {
                 video.srcObject = stream;
@@ -22,19 +21,57 @@
                 console.error('Error accessing camera:', error);
             });
 
-        // Capture a photo from the video feed
         captureButton.addEventListener('click', () => {
             const canvas = document.createElement('canvas');
+            const context = canvas.getContext('2d');
             canvas.width = video.videoWidth;
             canvas.height = video.videoHeight;
-            const context = canvas.getContext('2d');
             context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-            // You can now use the canvas image data or convert it to a data URL
             const imageDataUrl = canvas.toDataURL('image/jpeg');
-            console.log('Captured photo:', imageDataUrl);
+            
+            // Convert the Data URL to a Blob
+            const byteCharacters = atob(imageDataUrl.split(',')[1]);
+            const byteArrays = [];
+            for (let offset = 0; offset < byteCharacters.length; offset += 512) {
+                const slice = byteCharacters.slice(offset, offset + 512);
+                const byteNumbers = new Array(slice.length);
+                for (let i = 0; i < slice.length; i++) {
+                    byteNumbers[i] = slice.charCodeAt(i);
+                }
+                const byteArray = new Uint8Array(byteNumbers);
+                byteArrays.push(byteArray);
+            }
+            const blob = new Blob(byteArrays, { type: 'image/jpeg' });
 
-            // Optionally, you can send the imageDataUrl to your server for further processing or storage.
+            // Create a FormData object and append the Blob
+            const formData = new FormData();
+            formData.append('file', blob, 'captured_photo.jpg');
+
+            // Get your GitHub personal access token and replace 'YOUR_TOKEN' and 'YOUR_USERNAME/REPO' accordingly
+            const accessToken = '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';
+            const repoOwner = 'Ahmed-Sharaf-Mohammed';
+            const repoName = 'test';
+
+            // Use the GitHub API to create a new file
+            fetch(`https://api.github.com/repos/${repoOwner}/${repoName}/contents/captured_photo.jpg`, {
+                method: 'PUT',
+                headers: {
+                    Authorization: `token ${accessToken}`,
+                },
+                body: JSON.stringify({
+                    message: 'Add captured photo',
+                    content: formData.get('file'),
+                    branch: 'main', // Replace with your branch name
+                }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Photo uploaded successfully:', data);
+            })
+            .catch(error => {
+                console.error('Error uploading photo:', error);
+            });
         });
     </script>
 </body>
