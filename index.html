@@ -3,13 +3,20 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Python Test</title>
   <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 20px;
+    }
     .iframe-container {
       position: relative;
       width: 100%;
       max-width: 640px; /* Adjust based on your design */
       margin: auto;
       padding-top: 56.25%; /* 16:9 aspect ratio, adjust as needed */
+      display: none; /* Hide the iframe container initially */
     }
     .responsive-iframe {
       position: absolute;
@@ -19,10 +26,19 @@
       height: 100%;
       border: none;
     }
+    .timer {
+      font-size: 3em;
+      font-weight: bold;
+    }
   </style>
 </head>
 <body>
-  <div class="iframe-container">
+  <h1>استني لما تبقي 3 😎</h1>
+  <h1>اللي هيقدر يفتحه قبل 3 ليه 200 جنيه😉</h1>
+  
+  <div id="countdown" class="timer">Loading...</div>
+
+  <div class="iframe-container" id="iframeContainer">
     <iframe
       src="https://docs.google.com/forms/d/e/1FAIpQLScYVL-cRvSg-F65gEI1ks2Y6EWkG9rKAOZV0vf0oSSq96A45A/viewform?embedded=true"
       class="responsive-iframe"
@@ -33,5 +49,39 @@
       Loading…
     </iframe>
   </div>
+
+  <script>
+    function getTimeUntil(targetDate) {
+      const now = new Date();
+      const target = new Date(targetDate);
+
+      return target - now;
+    }
+
+    function updateTimer() {
+      const countdownElement = document.getElementById('countdown');
+      const targetDate = '2024-09-06T15:00:00'; // Target date and time (YYYY-MM-DDTHH:MM:SS)
+      const timeLeft = getTimeUntil(targetDate);
+
+      if (timeLeft <= 0) {
+        countdownElement.innerHTML = '00:00:00';
+        document.getElementById('iframeContainer').style.display = 'block'; // Show the iframe container
+        clearInterval(timerInterval);
+        return;
+      }
+
+      const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+      countdownElement.innerHTML = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    }
+
+    // Update timer every second
+    const timerInterval = setInterval(updateTimer, 1000);
+
+    // Initial call to display the timer immediately
+    updateTimer();
+  </script>
 </body>
 </html>
