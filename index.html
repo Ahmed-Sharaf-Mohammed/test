@@ -249,6 +249,14 @@
             border-color: #3498db;
         }
         
+        .notification.security {
+            border-color: #9b59b6;
+        }
+        
+        .notification.deadline {
+            border-color: #2ecc71;
+        }
+        
         .notification-header {
             display: flex;
             justify-content: space-between;
@@ -273,6 +281,18 @@
         
         .code-student {
             background: #f39c12;
+        }
+        
+        .code-data {
+            background: #9b59b6;
+        }
+        
+        .code-exam {
+            background: #2ecc71;
+        }
+        
+        .code-admin {
+            background: #34495e;
         }
         
         .notification-title {
@@ -322,10 +342,25 @@
             color: white;
         }
         
+        .btn-warning {
+            background: #f39c12;
+            color: white;
+        }
+        
         .btn-outline {
             background: transparent;
             border: 1px solid #3498db;
             color: #3498db;
+        }
+        
+        .countdown {
+            display: inline-block;
+            background: #f39c12;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+            animation: pulse 1.5s infinite;
         }
         
         /* Dashboard Content */
@@ -413,7 +448,7 @@
             <div class="user-actions">
                 <div class="notifications-bell" id="bellIcon">
                     <i class="fas fa-bell bell-icon"></i>
-                    <div class="badge">٣</div>
+                    <div class="badge">٦</div>
                 </div>
                 <div class="user-info">
                     <div>
@@ -433,7 +468,7 @@
                 </div>
                 <h2 class="alert-title">تنبيه هام!</h2>
                 <p class="alert-message">
-                    يوجد <strong>٣ تحذيرات</strong> جديدة تحتاج إلى مراجعتك فوراً.<br>
+                    يوجد <strong>٦ تحذيرات</strong> جديدة تحتاج إلى مراجعتك فوراً.<br>
                     يرجى الضغط على زر الإشعارات أعلاه أو الزر أدناه لمعاينة التفاصيل واتخاذ الإجراء اللازم.
                 </p>
                 <button class="btn btn-primary" id="viewNotificationsBtn">
@@ -525,6 +560,85 @@
                 <div class="notification-actions">
                     <button class="action-btn btn-primary"><i class="fas fa-ban"></i> إلغاء التدريب</button>
                     <button class="action-btn btn-outline"><i class="fas fa-envelope"></i> إرسال إنذار</button>
+                </div>
+            </div>
+            
+            <!-- New Notification: Data Deletion -->
+            <div class="notification security">
+                <div class="notification-header">
+                    <div class="notification-code code-data">تنبيه بيانات</div>
+                    <div class="notification-time">٠٢:٣٠ م - ١٩ يونيو ٢٠٢٥</div>
+                </div>
+                <h3 class="notification-title">حذف بيانات تدريب متدرب</h3>
+                <div class="notification-content">
+                    <p>قام المستخدم <strong>أحمد حسن</strong> بحذف بيانات تدريب المتدرب <strong>فاطمة علي</strong> من النظام.</p>
+                    
+                    <div class="notification-details">
+                        <p><i class="fas fa-database"></i> <strong>تفاصيل الحذف:</strong></p>
+                        <ul>
+                            <li>كود المتدرب: ٤٨٧٥</li>
+                            <li>تاريخ التدريب: ١٨ يونيو ٢٠٢٥</li>
+                            <li>وقت الحذف: ٠٢:١٥ م</li>
+                            <li>النتيجة الأصلية: ناجح</li>
+                        </ul>
+                    </div>
+                    
+                    <p>هذا الإجراء غير مصرح به ويتطلب تحقيقاً فورياً.</p>
+                </div>
+                <div class="notification-actions">
+                    <button class="action-btn btn-danger"><i class="fas fa-user-lock"></i> تعليق المستخدم</button>
+                    <button class="action-btn btn-outline"><i class="fas fa-undo"></i> استعادة البيانات</button>
+                </div>
+            </div>
+            
+            <!-- New Notification: Exam Deadline -->
+            <div class="notification deadline">
+                <div class="notification-header">
+                    <div class="notification-code code-exam">موعد تدريب</div>
+                    <div class="notification-time">٠٩:٠٠ ص - ٢٠ يونيو ٢٠٢٥</div>
+                </div>
+                <h3 class="notification-title">موعد نهائي للتدريب الثاني</h3>
+                <div class="notification-content">
+                    <p>المتدرب <strong>أحمد محمد</strong> (كود المتدرب: ٥١٢٤) لديه <span class="countdown">٦٠ يوم</span> متبقية لأداء تدريبه الثاني.</p>
+                    
+                    <div class="notification-details">
+                        <p><i class="fas fa-calendar-exclamation"></i> <strong>هام:</strong></p>
+                        <p>يجب إكمال التدريب خلال هذه الفترة، وليس بعد الموعد النهائي.</p>
+                    </div>
+                    
+                    <p>آخر موعد للتدريب: <strong>١٩ أغسطس ٢٠٢٥</strong></p>
+                </div>
+                <div class="notification-actions">
+                    <button class="action-btn btn-warning"><i class="fas fa-calendar-plus"></i> جدولة التدريب</button>
+                    <button class="action-btn btn-outline"><i class="fas fa-envelope"></i> إشعار المتدرب</button>
+                </div>
+            </div>
+            
+            <!-- New Notification: Grade Change -->
+            <div class="notification critical">
+                <div class="notification-header">
+                    <div class="notification-code code-admin">تنبيه مشرف</div>
+                    <div class="notification-time">٠٤:٤٥ م - ١٩ يونيو ٢٠٢٥</div>
+                </div>
+                <h3 class="notification-title">تعديل غير مصرح به للنتائج</h3>
+                <div class="notification-content">
+                    <p>المشرف <strong>سمير إبراهيم</strong> قام بتغيير نتائج التدريب من <span style="color: #e74c3c; font-weight: bold;">راسب</span> إلى <span style="color: #27ae60; font-weight: bold;">ناجح</span> للمتدرب <strong>نورا سالم</strong>.</p>
+                    
+                    <div class="notification-details">
+                        <p><i class="fas fa-edit"></i> <strong>تفاصيل التعديل:</strong></p>
+                        <ul>
+                            <li>كود المتدرب: ٣٩٨٢</li>
+                            <li>الدرجة الأصلية: ٥٨٪</li>
+                            <li>الدرجة المعدلة: ٧٢٪</li>
+                            <li>تاريخ التعديل: ١٩ يونيو ٢٠٢٥</li>
+                        </ul>
+                    </div>
+                    
+                    <p>هذا التعديل غير مصرح به ويتجاوز إجراءات المراجعة المعيارية.</p>
+                </div>
+                <div class="notification-actions">
+                    <button class="action-btn btn-danger"><i class="fas fa-user-lock"></i> تقييد الوصول</button>
+                    <button class="action-btn btn-outline"><i class="fas fa-history"></i> سجل التدقيق</button>
                 </div>
             </div>
         </div>
@@ -629,6 +743,13 @@
                 }, 300);
             });
         });
+        
+        // Auto-close alert after 8 seconds
+        setTimeout(() => {
+            if(alertOverlay.style.display !== 'none') {
+                closeAlert();
+            }
+        }, 8000);
     </script>
 </body>
 </html>
