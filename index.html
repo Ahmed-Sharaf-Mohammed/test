@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard - System Notifications</title>
+    <title>لوحة تحكم المشرف - نظام الإدارة التعليمية</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -18,6 +18,7 @@
             color: #333;
             min-height: 100vh;
             padding: 20px;
+            direction: rtl;
         }
         
         .container {
@@ -31,7 +32,7 @@
             justify-content: space-between;
             align-items: center;
             padding: 20px;
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(255, 255, 255, 0.9);
             border-radius: 15px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
             margin-bottom: 30px;
@@ -93,7 +94,7 @@
         .badge {
             position: absolute;
             top: -8px;
-            right: -8px;
+            left: -8px;
             background: #e74c3c;
             color: white;
             border-radius: 50%;
@@ -113,7 +114,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.85);
+            background: rgba(0, 0, 0, 0.7);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -181,16 +182,6 @@
             color: white;
         }
         
-        .btn-danger {
-            background: #e74c3c;
-            color: white;
-        }
-        
-        .btn-warning {
-            background: #f39c12;
-            color: white;
-        }
-        
         .btn:hover {
             opacity: 0.9;
             transform: translateY(-3px);
@@ -243,7 +234,7 @@
             margin-bottom: 20px;
             box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
             position: relative;
-            border-left: 4px solid;
+            border-right: 4px solid;
         }
         
         .notification.critical {
@@ -280,16 +271,8 @@
             background: #3498db;
         }
         
-        .code-data {
-            background: #9b59b6;
-        }
-        
-        .code-exam {
-            background: #2ecc71;
-        }
-        
-        .code-security {
-            background: #34495e;
+        .code-student {
+            background: #f39c12;
         }
         
         .notification-title {
@@ -310,7 +293,7 @@
             background: #fff;
             padding: 12px;
             border-radius: 8px;
-            border-left: 2px solid #ddd;
+            border-right: 2px solid #ddd;
             margin: 10px 0;
             font-size: 0.95rem;
         }
@@ -345,16 +328,6 @@
             color: #3498db;
         }
         
-        .countdown {
-            display: inline-block;
-            background: #f39c12;
-            color: white;
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-weight: bold;
-            animation: pulse 1.5s infinite;
-        }
-        
         /* Dashboard Content */
         .dashboard-content {
             display: grid;
@@ -364,7 +337,7 @@
         }
         
         .card {
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(255, 255, 255, 0.9);
             border-radius: 15px;
             padding: 25px;
             box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
@@ -435,19 +408,19 @@
         <header>
             <div class="logo">
                 <i class="fas fa-user-shield"></i>
-                <h1>Admin Dashboard</h1>
+                <h1>لوحة تحكم المشرف</h1>
             </div>
             <div class="user-actions">
                 <div class="notifications-bell" id="bellIcon">
                     <i class="fas fa-bell bell-icon"></i>
-                    <div class="badge">6</div>
+                    <div class="badge">٣</div>
                 </div>
                 <div class="user-info">
                     <div>
-                        <h3>Mohamed Ali</h3>
-                        <p>System Administrator</p>
+                        <h3>محمود عبد الله</h3>
+                        <p>المشرف العام</p>
                     </div>
-                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Admin">
+                    <img src="https://randomuser.me/api/portraits/men/41.jpg" alt="Admin">
                 </div>
             </div>
         </header>
@@ -458,13 +431,13 @@
                 <div class="alert-icon">
                     <i class="fas fa-exclamation-triangle"></i>
                 </div>
-                <h2 class="alert-title">Critical Alert!</h2>
+                <h2 class="alert-title">تنبيه هام!</h2>
                 <p class="alert-message">
-                    You have <strong>6 urgent notifications</strong> requiring immediate attention.<br>
-                    Please review them by clicking the notifications bell or the button below.
+                    يوجد <strong>٣ تحذيرات</strong> جديدة تحتاج إلى مراجعتك فوراً.<br>
+                    يرجى الضغط على زر الإشعارات أعلاه أو الزر أدناه لمعاينة التفاصيل واتخاذ الإجراء اللازم.
                 </p>
-                <button class="btn btn-danger" id="viewNotificationsBtn">
-                    <i class="fas fa-bell"></i> View Notifications
+                <button class="btn btn-primary" id="viewNotificationsBtn">
+                    <i class="fas fa-bell"></i> عرض الإشعارات
                 </button>
             </div>
         </div>
@@ -472,7 +445,7 @@
         <!-- Notifications Panel -->
         <div class="notifications-panel" id="notificationsPanel">
             <div class="panel-header">
-                <h2><i class="fas fa-bell"></i> System Notifications</h2>
+                <h2><i class="fas fa-bell"></i> الإشعارات والتنبيهات</h2>
                 <div class="close-panel" id="closePanel">
                     <i class="fas fa-times"></i>
                 </div>
@@ -482,49 +455,49 @@
             <div class="notification critical">
                 <div class="notification-header">
                     <div class="notification-code code-47">Code 47</div>
-                    <div class="notification-time">10:45 AM - June 20, 2025</div>
+                    <div class="notification-time">١٠:٤٥ ص - ٢٠ يونيو ٢٠٢٥</div>
                 </div>
-                <h3 class="notification-title">Warning: Consecutive Trainee Failures</h3>
+                <h3 class="notification-title">تحذير: سقوط متكرر للطلاب</h3>
                 <div class="notification-content">
-                    <p>User <strong>Hassan Ahmed</strong> recorded three consecutive Trainee failures within a short period.</p>
+                    <p>تم رصد مستخدم باسم <strong>حسن احمد</strong> قام بتسجيل سقوط ثلاثة طلاب على التوالي خلال فترة قصيرة.</p>
                     
                     <div class="notification-details">
-                        <p><i class="fas fa-exclamation-circle"></i> <strong>Trainee Details:</strong></p>
+                        <p><i class="fas fa-exclamation-circle"></i> <strong>تفاصيل المتدربون:</strong></p>
                         <ul>
-                            <li>Omar Mohamed - code: 4521</li>
-                            <li>Sara Khalid - code: 3789</li>
-                            <li>Yasser Abdulrahman - code: 5012</li>
+                            <li>عمر محمد - كود المُتدرب: ٤٥٢١</li>
+                            <li>سارة خالد - كود المُتدرب: ٣٧٨٩</li>
+                            <li>ياسر عبد الرحمن - كود المُتدرب: ٥٠١٢</li>
                         </ul>
                     </div>
                     
-                    <p>This pattern requires immediate investigation for potential training methodology issues.</p>
+                    <p>هذا النمط يتطلب التدقيق الفوري حيث يشير إلى مشكلة محتملة في منهجية التدريب أو سلوك المدرب.</p>
                 </div>
                 <div class="notification-actions">
-                    <button class="action-btn btn-danger"><i class="fas fa-user-lock"></i> Disable Account</button>
-                    <button class="action-btn btn-outline"><i class="fas fa-file-alt"></i> Full Report</button>
+                    <button class="action-btn btn-danger"><i class="fas fa-user-lock"></i> تعطيل الحساب</button>
+                    <button class="action-btn btn-outline"><i class="fas fa-file-alt"></i> تقرير كامل</button>
                 </div>
             </div>
             
             <!-- Student Failure Notification -->
             <div class="notification warning">
                 <div class="notification-header">
-                    <div class="notification-code code-data">Data Alert</div>
-                    <div class="notification-time">09:30 AM - June 20, 2025</div>
+                    <div class="notification-code code-student">تنبيه طالب</div>
+                    <div class="notification-time">٠٩:٣٠ ص - ٢٠ يونيو ٢٠٢٥</div>
                 </div>
-                <h3 class="notification-title">Trainee Failed After Previous Success</h3>
+                <h3 class="notification-title">سقوط طالب بعد نجاح سابق</h3>
                 <div class="notification-content">
-                    <p>Trainee <strong>Mustafa Kamal</strong> (code: 4218) failed the recent exam with instructor Hassan Ahmed.</p>
+                    <p>سقط المُتدرب <strong>مصطفى كمال</strong> (كود المُتدرب: ٤٢١٨) في التدريب الأخير مع المدرب حسن أحمد.</p>
                     
                     <div class="notification-details">
-                        <p><i class="fas fa-info-circle"></i> <strong>Important Note:</strong></p>
-                        <p>The same Trainee passed the previous exam with instructor Ahmed Suleiman just one month ago.</p>
+                        <p><i class="fas fa-info-circle"></i> <strong>ملاحظة مهمة:</strong></p>
+                        <p>نفس المُتدرب كان ناجحاً في التدريب السابق مع المدرب أحمد سليمان قبل شهر واحد فقط.</p>
                     </div>
                     
-                    <p>This discrepancy requires review of evaluation procedures and standards compliance.</p>
+                    <p>هذا التناقض في النتائج يتطلب مراجعة إجراءات التقييم ومدى تطابقها مع المعايير المعتمدة.</p>
                 </div>
                 <div class="notification-actions">
-                    <button class="action-btn btn-primary"><i class="fas fa-history"></i> Compare Results</button>
-                    <button class="action-btn btn-outline"><i class="fas fa-user-graduate"></i> Trainee Record</button>
+                    <button class="action-btn btn-primary"><i class="fas fa-history"></i> مقارنة النتائج</button>
+                    <button class="action-btn btn-outline"><i class="fas fa-user-graduate"></i> سجل المُتدرب</button>
                 </div>
             </div>
             
@@ -532,106 +505,26 @@
             <div class="notification info">
                 <div class="notification-header">
                     <div class="notification-code code-90">Code 90</div>
-                    <div class="notification-time">08:15 AM - June 20, 2025</div>
+                    <div class="notification-time">٠٨:١٥ ص - ٢٠ يونيو ٢٠٢٥</div>
                 </div>
-                <h3 class="notification-title">Unauthorized Exam Conducted</h3>
+                <h3 class="notification-title">امتحان غير مصرّح به</h3>
                 <div class="notification-content">
-                    <p>Instructor <strong>Ali Mahmoud</strong> (Employee code: 2243) conducted an exam outside their authorized permissions.</p>
+                    <p>قام مدرب باسم <strong>علي محمود</strong> (كود الموظف: ٢٢٤٣) بعمل امتحان خارج صلاحياته الممنوحة.</p>
                     
                     <div class="notification-details">
-                        <p><i class="fas fa-clipboard-list"></i> <strong>Exam Details:</strong></p>
+                        <p><i class="fas fa-clipboard-list"></i> <strong>تفاصيل التدريب:</strong></p>
                         <ul>
-                            <li>Exam Type: Final</li>
-                            <li>Subject: Flighting ....</li>
-                            <li>Date: June 19, 2025</li>
-                            <li>Trainee: 3</li>
+                            <li>نوع التدريب: Competency</li>
+                            <li>التاريخ: ١٩ يونيو ٢٠٢٥</li>
+                            <li>عدد المتدربون: ٣</li>
                         </ul>
                     </div>
                     
-                    <p>This action violates approved policies and may result in unofficial results.</p>
+                    <p>هذا الإجراء يتعارض مع السياسات المعتمدة وقد يؤدي إلى نتائج غير معتمدة رسمياً.</p>
                 </div>
                 <div class="notification-actions">
-                    <button class="action-btn btn-primary"><i class="fas fa-ban"></i> Cancel Exam</button>
-                    <button class="action-btn btn-outline"><i class="fas fa-envelope"></i> Send Warning</button>
-                </div>
-            </div>
-            
-            <!-- New Notification: Data Deletion -->
-            <div class="notification critical">
-                <div class="notification-header">
-                    <div class="notification-code code-security">Security Alert</div>
-                    <div class="notification-time">02:30 PM - June 19, 2025</div>
-                </div>
-                <h3 class="notification-title">Exam Data Deleted by User</h3>
-                <div class="notification-content">
-                    <p>User <strong>Ahmed Hassan</strong> deleted exam data for Trainee <strong>Fatima Ali</strong> from the system.</p>
-                    
-                    <div class="notification-details">
-                        <p><i class="fas fa-database"></i> <strong>Details:</strong></p>
-                        <ul>
-                            <li>Trainee code: 4875</li>
-                            <li>Exam Date: June 18, 2025</li>
-                            <li>Deleted At: 02:15 PM</li>
-                            <li>Original Result: Pass</li>
-                        </ul>
-                    </div>
-                    
-                    <p>This action was not authorized and requires immediate investigation.</p>
-                </div>
-                <div class="notification-actions">
-                    <button class="action-btn btn-danger"><i class="fas fa-user-lock"></i> Suspend User</button>
-                    <button class="action-btn btn-outline"><i class="fas fa-undo"></i> Restore Data</button>
-                </div>
-            </div>
-            
-            <!-- New Notification: Exam Deadline -->
-            <div class="notification warning">
-                <div class="notification-header">
-                    <div class="notification-code code-exam">Exam Alert</div>
-                    <div class="notification-time">09:00 AM - June 20, 2025</div>
-                </div>
-                <h3 class="notification-title">Upcoming Exam Deadline</h3>
-                <div class="notification-content">
-                    <p>Trainee <strong>Ahmed Mohamed</strong> (code: 5124) has <span class="countdown">60 days</span> remaining to take his second exam.</p>
-                    
-                    <div class="notification-details">
-                        <p><i class="fas fa-calendar-exclamation"></i> <strong>Important:</strong></p>
-                        <p>The exam must be completed within this period, not after the deadline.</p>
-                    </div>
-                    
-                    <p>Last exam date: <strong>August 19, 2025</strong></p>
-                </div>
-                <div class="notification-actions">
-                    <button class="action-btn btn-primary"><i class="fas fa-calendar-plus"></i> Schedule Exam</button>
-                    <button class="action-btn btn-outline"><i class="fas fa-envelope"></i> Notify Trainee</button>
-                </div>
-            </div>
-            
-            <!-- New Notification: Grade Change -->
-            <div class="notification critical">
-                <div class="notification-header">
-                    <div class="notification-code code-security">Admin Alert</div>
-                    <div class="notification-time">04:45 PM - June 19, 2025</div>
-                </div>
-                <h3 class="notification-title">Unauthorized Grade Modification</h3>
-                <div class="notification-content">
-                    <p>Admin <strong>Samir Ibrahim</strong> changed exam results from <span style="color: #e74c3c; font-weight: bold;">Fail</span> to <span style="color: #27ae60; font-weight: bold;">Pass</span> for Trainee <strong>Noura Salem</strong>.</p>
-                    
-                    <div class="notification-details">
-                        <p><i class="fas fa-edit"></i> <strong>Modification Details:</strong></p>
-                        <ul>
-                            <li>Trainee code: 3982</li>
-                            <li>Original Score: 58%</li>
-                            <li>Modified Score: 72%</li>
-                            <li>Date Modified: June 19, 2025</li>
-                        </ul>
-                    </div>
-                    
-                    <p>This unauthorized modification bypassed standard review procedures.</p>
-                </div>
-                <div class="notification-actions">
-                    <button class="action-btn btn-danger"><i class="fas fa-user-lock"></i> Restrict Access</button>
-                    <button class="action-btn btn-outline"><i class="fas fa-history"></i> Audit Log</button>
+                    <button class="action-btn btn-primary"><i class="fas fa-ban"></i> إلغاء التدريب</button>
+                    <button class="action-btn btn-outline"><i class="fas fa-envelope"></i> إرسال إنذار</button>
                 </div>
             </div>
         </div>
@@ -639,45 +532,45 @@
         <!-- Dashboard Content -->
         <div class="dashboard-content">
             <div class="card">
-                <h3 class="card-title"><i class="fas fa-users"></i> User Statistics</h3>
+                <h3 class="card-title"><i class="fas fa-users"></i> إحصائيات المستخدمين</h3>
                 <div class="card-content">
-                    <p>Total Users: <strong>1,245</strong></p>
-                    <p>Active Instructors: <strong>47</strong></p>
-                    <p>Registered Trainees: <strong>892</strong></p>
+                    <p>إجمالي المستخدمين: <strong>1,245</strong></p>
+                    <p>المدربون النشطون: <strong>47</strong></p>
+                    <p>المتدربون المسجلون: <strong>892</strong></p>
                 </div>
             </div>
             
             <div class="card">
-                <h3 class="card-title"><i class="fas fa-car"></i> Exam Statistics</h3>
+                <h3 class="card-title"><i class="fas fa-car"></i> إحصائيات الاختبارات</h3>
                 <div class="card-content">
-                    <p>Today's Exams: <strong>128</strong></p>
-                    <p>Pass Rate: <strong>85%</strong></p>
-                    <p>Scheduled Exams: <strong>63</strong></p>
+                    <p>اختبارات اليوم: <strong>128</strong></p>
+                    <p>المعدل اليومي: <strong>85%</strong></p>
+                    <p>الاختبارات المجدولة: <strong>63</strong></p>
                 </div>
             </div>
             
             <div class="card">
-                <h3 class="card-title"><i class="fas fa-chart-line"></i> System Performance</h3>
+                <h3 class="card-title"><i class="fas fa-chart-line"></i> أداء النظام</h3>
                 <div class="card-content">
-                    <p>System Status: <strong style="color: #27ae60;">Stable</strong></p>
-                    <p>Current Usage: <strong>42%</strong></p>
-                    <p>Last Update: <strong>Today 10:30 AM</strong></p>
+                    <p>حالة النظام: <strong style="color: #27ae60;">مستقر</strong></p>
+                    <p>الاستخدام الحالي: <strong>42%</strong></p>
+                    <p>آخر تحديث: <strong>اليوم 10:30 ص</strong></p>
                 </div>
             </div>
             
             <div class="card">
-                <h3 class="card-title"><i class="fas fa-calendar-alt"></i> Upcoming Events</h3>
+                <h3 class="card-title"><i class="fas fa-calendar-alt"></i> الأحداث القادمة</h3>
                 <div class="card-content">
-                    <p>Managers Meeting: <strong>June 23, 2025</strong></p>
-                    <p>Instructor Workshop: <strong>June 25, 2025</strong></p>
-                    <p>System Update: <strong>June 30, 2025</strong></p>
+                    <p>اجتماع المدراء: <strong>٢٣ يونيو ٢٠٢٥</strong></p>
+                    <p>ورشة تدريب المدربين: <strong>٢٥ يونيو ٢٠٢٥</strong></p>
+                    <p>تحديث النظام: <strong>٣٠ يونيو ٢٠٢٥</strong></p>
                 </div>
             </div>
         </div>
         
         <footer>
-            <p>Driving School Management System © 2025. All Rights Reserved.</p>
-            <p>Last Updated: June 20, 2025 - 11:00 AM</p>
+            <p>نظام إدارة رحلات الطيران © ٢٠٢٥. جميع الحقوق محفوظة.</p>
+            <p>آخر تحديث: ٢٠ يونيو ٢٠٢٥ - ١١:٠٠ ص</p>
         </footer>
     </div>
     
@@ -724,9 +617,9 @@
                 const title = notification.querySelector('.notification-title').textContent;
                 
                 if(this.classList.contains('btn-danger')) {
-                    alert(`Account suspension initiated!\nAction: ${title}`);
+                    alert(`سيتم تعطيل الحساب كما طلبت!\nالإجراء: ${title}`);
                 } else {
-                    alert(`Action is being processed!\nAction: ${title}`);
+                    alert(`جاري تنفيذ الإجراء المطلوب!\nالإجراء: ${title}`);
                 }
                 
                 // Add a visual effect
@@ -736,13 +629,6 @@
                 }, 300);
             });
         });
-        
-        // Auto-close alert after 8 seconds
-        setTimeout(() => {
-            if(alertOverlay.style.display !== 'none') {
-                closeAlert();
-            }
-        }, 8000);
     </script>
 </body>
 </html>
